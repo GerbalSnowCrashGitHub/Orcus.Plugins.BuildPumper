@@ -1,0 +1,54 @@
+﻿<Window x:Class="BuildPumper.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converter="clr-namespace:BuildPumper.Converter"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        x:Name="RootWindow"
+        Title="File Pumper Settings"
+        Width="400"
+        Height="150"
+        Icon="icon.png"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        mc:Ignorable="d">
+    <Window.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+    </Window.Resources>
+    <StackPanel HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+        <StackPanel Margin="0,5,0,0" Orientation="Horizontal">
+            <TextBox Width="100"
+                     Margin="0,0,10,0"
+                     Text="{Binding ElementName=RootWindow,
+                                    Path=Settings.Size,
+                                    UpdateSourceTrigger=PropertyChanged}" />
+            <RadioButton VerticalAlignment="Center"
+                         Content="MiB"
+                         IsChecked="{Binding ElementName=RootWindow,
+                                             Path=Settings.SizeIsMiB}" />
+            <RadioButton Margin="5,0,0,0"
+                         VerticalAlignment="Center"
+                         Content="KiB"
+                         IsChecked="{Binding ElementName=RootWindow,
+                                             Path=Settings.SizeIsMiB,
+                                             Converter={StaticResource InverseBooleanConverter}}" />
+        </StackPanel>
+        <Separator Height="1" Margin="0,5,0,5" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <RadioButton Content="Final size" IsChecked="{Binding ElementName=RootWindow, Path=Settings.IsFinalSize}" />
+            <RadioButton Grid.Column="2"
+                         Content="Size to add"
+                         IsChecked="{Binding ElementName=RootWindow,
+                                             Path=Settings.IsFinalSize,
+                                             Converter={StaticResource InverseBooleanConverter}}" />
+        </Grid>
+    </StackPanel>
+</Window>
