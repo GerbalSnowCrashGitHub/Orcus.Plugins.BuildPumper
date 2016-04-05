@@ -8,14 +8,18 @@
         Title="File Pumper Settings"
         Width="400"
         Height="150"
-        Icon="icon.png"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d">
     <Window.Resources>
         <converter:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource LabelTextBrush}" />
+        </Style>
     </Window.Resources>
+
     <StackPanel HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Orientation="Vertical">

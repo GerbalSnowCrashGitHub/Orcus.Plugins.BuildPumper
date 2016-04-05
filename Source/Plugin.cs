@@ -17,7 +17,7 @@ namespace BuildPumper
         public bool SettingsAvailable { get; } = true;
         public BuildType BuildType { get; } = BuildType.ChangeFile;
 
-        public string DoWork(string path, Action<string> logger)
+        public bool DoWork(ref string path, IBuildLogger buildLogger)
         {
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.Write))
             {
@@ -29,17 +29,20 @@ namespace BuildPumper
                     bytesToAdd = size;
 
                 if (bytesToAdd < 0)
-                    throw new PluginException("Can't reduce the size of the file");
+                {
+                    buildLogger.Error("Can't reduce the size of the file");
+                    return false;
+                }
 
-                logger.Invoke($"Pumping {bytesToAdd} bytes into the file");
+                buildLogger.Status($"Pumping {bytesToAdd} bytes into the file");
 
                 for (int i = 0; i < bytesToAdd; i++)
                     fs.WriteByte(0);
 
-                logger.Invoke("Pumping successful");
+                buildLogger.Status("Pumping successful");
             }
 
-            return path;
+            return true;
         }
 
         public void OpenSettings(Window ownerWindow)
